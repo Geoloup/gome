@@ -35,7 +35,7 @@ function newt() {
     // create iframe of the tab
     iframe = document.createElement('iframe');
     iframe.id = uuid;
-    iframe.src = 'https://eb283026-7020-4170-bacf-090f07880372-00-1d0ow6mah5y9x.spock.replit.dev/app.html?uuid=' + uuid
+    iframe.src = 'https://geoloupgome.netlify.app/app.html?uuid=' + uuid
     document.getElementById("tabs").appendChild(iframe)
     document.getElementById("uuid" + uuid).addEventListener('click',()=>{closetab(tabtop.dataset.uuid)})
     var contextMenuTwo = CtxMenu(tabtop);
