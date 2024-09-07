@@ -1,0 +1,22 @@
+{
+    "name": "Goloup - Gome",
+    "short_name": "Gome",
+    "start_url": "/",
+    "display": "standalone",
+    "display_override": ["window-controls-overlay"],
+    "description":"Gome is a minimalist navigator",
+    "icons": [
+        {
+          "src": "pwa/250.png",
+          "sizes": "250x250",
+        "type": "image/png"
+        },
+        {
+          "src": "pwa/500.png",
+          "sizes": "500x500",
+          "type": "image/png"
+        }
+    ],
+    "background_color": "black",
+    "theme_color": "black"
+}

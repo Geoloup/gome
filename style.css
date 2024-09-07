@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+nav top {
+    position: fixed;
+    background: black;
+    top: env(titlebar-area-y, 0);
+    left: env(titlebar-area-x, 0);
+    width: env(titlebar-area-width, 100%);
+    height: env(titlebar-area-height, 33px);
+    app-region: drag;
+    display: flex;
+    align-items: center;
+}
+
+nav top #tabtop {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    overflow: scroll;
+}
+
+
+nav top #tabtop::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hiding scrollbar for IE, Edge and Firefox */
+nav top #tabtop {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+nav top #tabtop button {
+    app-region: no-drag;
+    white-space: nowrap;
+    border: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: -moz-available;
+    color: white;
+    height: -webkit-fill-available;
+    height: fill-available;
+    font-family: "Comfortaa", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    display: flex;
+    font-size: 1.1rem;
+    background: #575757;
+    align-items: center;
+    justify-content: center;
+}
+
+nav bottom {
+    display: flex;
+    position: fixed;
+    background: #575757;
+    left: env(titlebar-area-x, 0);
+    top: env(titlebar-area-height, 33px);
+    width: 100vw;
+    height: env(titlebar-area-height, 33px);
+    align-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+nav bottom [class^="icon-"] {
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+nav bottom [class^="icon-"]:before {
+    margin: 4.5px;
+}
+
+nav .tab {
+    /* only for the pwa */
+    -webkit-app-region: no-drag;
+    app-region: no-drag;
+}
+
+nav top .UIplus {
+    -webkit-app-region: no-drag;
+    app-region: no-drag;
+    display: block;
+    margin-top: 22px;
+    color: white;
+    line-height: 0;
+    font-size: 25px;
+    display: block;
+    width: 24.99px;
+    height: 24.43px;
+}
+
+nav top #tabtop .tabclose {
+    font-size: 25px;
+}
+
+#searchbar {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    font-family: "Comfortaa", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    border: none;
+    border-radius: 100px;
+    background: #383838;
+    padding: 3px;
+    font-size: 17px;
+    margin: 3px;
+    color: lightgray;
+    top: -4px;
+}
+
+#searchbar:focus {
+    outline: 3px solid #5858fe;
+    padding: 2px;
+    padding-left: 3px !important;
+}
+
+gome {
+    position: fixed;
+    height: 100%;
+    left: 0;
+    width: 100%;
+    top: calc(env(titlebar-area-height, 33px) + env(titlebar-area-height, 33px));
+    display: block;
+}
+
+gome iframe {
+    display:none;
+    position: fixed;
+    visibility: hidden;
+    top: calc(env(titlebar-area-height, 33px) + env(titlebar-area-height, 33px));
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+gome .hidden {
+    display:block;
+    overflow: scroll;
+    position: fixed;
+    visibility: visible;
+    top: calc(env(titlebar-area-height, 33px) + env(titlebar-area-height, 33px));
+    border: none;
+    height: calc(100vh - (env(titlebar-area-height, 33px) + env(titlebar-area-height, 33px)));
+    width: 100%;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}

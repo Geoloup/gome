@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Goloup Gome</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="manifest" href="pwa.json" />
+    <link rel="stylesheet" href="icons/browser_icon.css" />
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <nav>
+        <top>
+            <div id="tabtop" class='noselect'></div>
+            <i id='newtab' class='UIplus bx bx-plus'></i>
+        </top>
+        <bottom>
+            <i class='icon-left'></i>
+            <i class='icon-right'></i>
+            <i class='icon-refresh' onclick="refreshTab()"></i>
+            <input id="searchbar" placeholder="search for app or put app url here"></input>
+            <i class="icon-burger" onclick="burger(elm)" data-uuid="0df994f8-1da8-4b1a-a6ba-caed58675ab381953539-ef10-4680-b8e5-a997030d36c2fdbd2de40-ed5e-4aae-a564-51858a48dee6"></i>
+        </bottom>
+        <burger id="0df994f8-1da8-4b1a-a6ba-caed58675ab381953539-ef10-4680-b8e5-a997030d36c2fdbd2de40-ed5e-4aae-a564-51858a48dee6">
+            <h1>Settings</h1>
+        </burger>
+    </nav>
+    <gome id='tabs'>
+    </gome>
+    <script src="script.js"></script>
+    <script src="menu.js"></script>
+    <script src="ctx.js"></script>
+    <script src='iframeapi.js'></script>
+</body>
+
+</html>

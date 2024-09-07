@@ -1,0 +1,149 @@
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>App Store</title>
+    <link rel="stylesheet" href="app.style.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div class='controlsSmall'>
+        <div class="tooltip" onclick="animation()"><img class="left" src='https://zupimages.net/up/24/17/5y6x.png'>
+            <span class="tooltiptext">Keep animation</span>
+        </div>
+        <img class='img' style='width: 80px'
+            src='https://eb283026-7020-4170-bacf-090f07880372-00-1d0ow6mah5y9x.spock.replit.dev/gome.gif'>
+
+        <div class="tooltip" onclick='removeAnimation()'><img class="right"
+                src='https://zupimages.net/up/24/17/vzsn.png'>
+            <span class="tooltiptext">Remove animation</span>
+        </div>
+    </div>
+    <div class="controls">
+        <img class="img" style="width: 80px"
+            src="https://eb283026-7020-4170-bacf-090f07880372-00-1d0ow6mah5y9x.spock.replit.dev/gome.gif" />
+        <div class='setting'>
+            <div onclick="animation()" class="tooltip"><img src="https://zupimages.net/up/24/17/5y6x.png" />
+                <span class="tooltiptext">Keep animation</span>
+            </div>
+            <div onclick='removeAnimation()' class="tooltip"><img class="right"
+                    src="https://zupimages.net/up/24/17/vzsn.png" />
+                <span class="tooltiptext">Remove animation</span>
+            </div>
+
+        </div>
+    </div>
+
+    <h1 style='text-align: center;margin-top: 1rem;'>Gome <span>Lauch</span>er</h1>
+    <div class="apps" id='apps'>
+        <div class="app">
+            <div>
+                <img src="https://chat.geoloup.com/img/ic-hat.png" alt="" />
+            </div>
+            <h2>IC-hat</h2>
+            <p>by Geoloup Team</p>
+            <a onclick="openappp('https://ic-hat.geoloup.com/','Ic-hat')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+        <div class="app">
+            <div>
+                <img src="https://webmaker.app/images/icon-128.png" alt="" />
+            </div>
+            <h2>Html editor</h2>
+            <p>by WebMakers</p>
+            <a onclick="openappp('https://webmaker.app/create/','WebMakers')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+        <div class="app">
+            <div>
+                <img src="https://fr.wikipedia.org/static/images/icons/wikipedia.png" alt="" />
+            </div>
+            <h2>Wikipedia</h2>
+            <p>by wikimedia</p>
+            <a onclick="openappp('https://en.wikipedia.org/wiki/','Wikipedia')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+        <div class="app">
+            <div>
+                <img src="img/todo.png" alt="" />
+            </div>
+            <h2>Todo app</h2>
+            <p>by Bookie0 on replit</p>
+            <a onclick="openappp('https://todo-app.replit.app/','Todo app')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+        <div class="app">
+            <div>
+                <img src="https://encody4.online/2BA2B8DA-284B-4793-B1B6-0BC069D39758.png" alt="" />
+            </div>
+            <h2>encody4</h2>
+            <p>by encody4</p>
+            <a onclick="openappp('https://encody4.online/','encody4')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+        <div class="app">
+            <div>
+                <img src="https://i.ytimg.com/vi/ecCVor7mJ6o/maxresdefault.jpg" alt="" />
+            </div>
+            <h2>sandspixel club</h2>
+            <p>by sandspixel</p>
+            <a onclick="openappp('https://sandspiel.club/','sandspixel club')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+        <div class="app">
+            <div>
+                <img src="https://kahoot.com/files/2019/02/BrandAssets-Logo-CoverImage.png" alt="" />
+            </div>
+            <h2>Kahoot.it</h2>
+            <p>by kahoot</p>
+            <a onclick="openappp('https://kahoot.it/','kahoot')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+        <div class="app">
+            <div>
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAllBMVEVHcEwy3+cy3+Yx5O0x4+sw6fIx6PH/MpEv5O3+MIqPkb79NZQw5+/7NZIv6O8l6/DzNpL0NI8y3+Yx5+0y7PUx5+7+NJMv5Oz6NZT5NZHzNJP3M5L+NZQx5ezTTZ0A/fr/Mosu2+T/NJIu2uMv4Oj9K4gV6Ov/H4Ul4OblQ5O7cqtpuNAz1eEs9PigirdPzNt0nsKNosL/Jp0UAAAAIHRSTlMAIhdgb/6/fv29BsvMpe8PWxA7idOm+dttRRow51HKn1++/P0AAADqSURBVCiRzdDJcoMwEATQsUFCRoBJvGdFo2H1kuT/fy5D8AKU5XP6yKtWNQPQS+it/CnczdSLhBAb7w5PPKmUtVYJ+T4ftXwmY9uQSlbPPZpzi8heQrRcTK4zZNKjrh354V/t80jG2GEMCdmW0+arqsbIOS64G5T5iXncVFG7KsC8rH8ORTUg2V0jwCzLy2ZfFee3jSLpn9e2yFo3+66seOnlRzpkzuvTobAkNje6Iqesv4tkePkb8uMfo4v3MMPZP8DtI3yKEZ0IYarXTgR4CbQbAV7jN3QihLt4jS7kYalG1A5k3urd4MMv5YwulWuO854AAAAASUVORK5CYII="
+                    alt="" />
+            </div>
+            <h2>Boxicon</h2>
+            <p>by boxicon</p>
+            <a onclick="openappp('https://boxicons.com/','Boxicon')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+        <div class="app">
+            <div>
+                <img src="https://zupimages.net/up/24/17/jz1y.png" alt="" />
+            </div>
+            <h2>Screen Recorder</h2>
+            <p>by geoloup Team</p>
+            <a
+                onclick="openappp('https://56920502-967c-4125-93e7-d64eb0a31420-00-qvt1kwmvz3jg.worf.replit.dev/','Screen Recorder')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+        <div class="app">
+            <div>
+                <img src="https://zupimages.net/up/24/18/24v5.png" alt="" />
+            </div>
+            <h2>Looop CSS</h2>
+            <p>by n1nja and Geoloup</p>
+            <a
+                onclick="openappp('https://dbffaee4-6b94-4393-b9af-552b7a3ecc90-00-1psez7mfalgl5.janeway.replit.dev/','Loop Animation')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+        <div class="app">
+            <div>
+                <img src="https://www.animate-code.com/favicon.ico" alt="" />
+            </div>
+            <h2>Animate Code</h2>
+            <p>by Josh tried coding on YTB</p>
+            <a onclick="openappp('https://www.animate-code.com/','Loop Animation')"><img
+                    src='https://zupimages.net/up/24/17/lsay.png'><span>Lauch</span></a>
+        </div>
+    </div>
+    <script>
+        function openappp(url, name) {
+            window.top.postMessage([name, new URLSearchParams(window.location.search).get('uuid'), url], '*')
+            location.replace(url)
+        }
+    </script>
+    <script src='animation.js'></script>
+</body>

@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+
+body {
+    font-family: 'Comfortaa', sans-serif;
+    margin-bottom: 70px;
+}
+
+.app {
+    width: 250px;
+    display: flex;
+    height: 300px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px #ccc;
+    flex-direction: column;
+    align-content: center;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.app * {
+    margin: 0px;
+}
+
+.app div {
+    display: flex;
+    width: calc(100% - 20px);
+    height: calc(90% - 20px);
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.app div img {
+    min-width: calc(15% + 20px);
+    min-height: calc(5% + 20px);
+    max-width: calc(100% - 20px);
+    max-height: calc(90% - 20px);
+}
+
+.apps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: center;
+    align-items: flex-start;
+}
+
+.apps a {
+    display: flex;
+    text-decoration: none;
+    color: #fff;
+    text-align: left;
+    background: linear-gradient(90deg, #248eff, #248eff);
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 5px;
+    height: 16px;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: 128px;
+    flex-direction: row;
+}
+
+.animation .app:hover {
+    animation: hovereffect 0.6s linear;
+}
+
+.apps a span {
+    transform: translateX(-20%);
+}
+
+.apps a img {
+    height: 50px;
+    border-radius: 100%;
+    transform: translateX(-20%);
+}
+
+.animation a:hover {
+    animation: backgroundarrow 0.5s linear;
+    background: linear-gradient(90deg, black 100%, #248eff 0%);
+}
+
+.animation a:hover img {
+    animation: arrow 0.5s linear;
+    background: none;
+    transform: translateX(180%);
+}
+
+
+@keyframes arrow {
+    0% {
+        transform: translateX(-10%);
+    }
+
+    100% {
+        transform: translateX(180%);
+    }
+}
+
+@keyframes backgroundarrow {
+    0% {
+        background: linear-gradient(90deg, black 0%, #248eff 100%);
+    }
+
+    to {
+
+        background: linear-gradient(90deg, black 100%, #248eff 0%);
+    }
+}
+
+
+@keyframes hovereffect {
+    0% {
+        rotate: 0deg;
+    }
+
+    25% {
+        rotate: -2deg;
+    }
+
+    50% {
+        rotate: 2deg;
+    }
+
+    100% {
+        rotate: 0deg;
+    }
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 115%;
+    left: 60%;
+    margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.controlsSmall {
+    display: none;
+}
+
+@media only screen and (max-width: 850px) {
+    .controls {
+        display: none !important;
+    }
+
+    .controlsSmall {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        z-index: 2;
+        display: flex;
+        transform: translate(-50%);
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        background: black;
+        padding: 5px;
+        border-radius: 10px;
+        transition: 1s;
+    }
+
+    .controlsSmall img {
+        border-radius: 20px;
+        background: white;
+        width: 50px;
+    }
+
+    .controlsSmall .img {
+        position: fixed;
+        border-radius: 100%;
+        z-index: 2;
+    }
+
+    .controlsSmall .left {
+        animation: smovinright 0.5s linear;
+        margin-right: -20px;
+    }
+
+    .controlsSmall .right {
+        animation: smovinleft 0.5s linear;
+        margin-left: -20px;
+    }
+
+    .controlsSmall:hover .left {
+        animation: smovright 0.5s linear;
+        margin-right: 45px;
+    }
+
+    .controlsSmall:hover .right {
+        animation: smovleft 0.5s linear;
+        margin-left: 45px;
+    }
+
+    @keyframes smovright {
+        0% {
+            margin-right: -20px;
+        }
+
+        100% {
+            margin-right: 45px;
+        }
+    }
+
+    @keyframes smovleft {
+        0% {
+            margin-left: -20px;
+        }
+
+        100% {
+            margin-left: 45px;
+        }
+    }
+
+    @keyframes smovinright {
+        0% {
+            margin-right: 45px;
+        }
+
+        100% {
+            margin-right: -20px;
+        }
+    }
+
+    @keyframes smovinleft {
+        0% {
+            margin-left: 45px;
+        }
+
+        100% {
+            margin-left: -20px;
+        }
+    }
+}
+
+.controls {
+    margin-bottom: 23px;
+    position: fixed;
+    bottom: 20px;
+    left: 50px;
+    z-index: 2;
+    display: flex;
+    transform: translate(-50%);
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(90deg, white 50%, black 50%);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.controls img {
+    border-radius: 20px;
+    background: white;
+    width: 50px;
+}
+
+.controls:hover {
+    margin-bottom: 0px;
+}
+
+.controls .img {
+    position: fixed;
+    border-radius: 100%;
+    z-index: 2;
+}
+
+.controls:hover .setting img:not(.right) {
+    animation: movinrighth 0.5s linear;
+}
+
+.setting .right {
+    margin-left: 5px;
+}
+.setting {
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+    align-items: center;
+}
+
+.controls .setting {
+    animation: movinright 0.5s linear;
+    width: 100px;
+    height: 45px;
+    transform: translate(0px);
+    display: none;
+}
+
+.controls:hover .setting {
+    animation: movright 0.5s linear;
+    width: 300px;
+    height: 45px;
+    display: flex;
+}
+
+@keyframes movright {
+    0% {
+        width: 100px;
+        height: 45px;
+        display: flex;
+    }
+
+    100% {
+        width: 300px;
+        height: 45px;
+    }
+}
+
+@keyframes movinright {
+    0% {
+        width: 300px;
+        height: 45px;
+    }
+
+    100% {
+        width: 100px;
+        height: 45px;
+        opacity: 0;
+    }
+}
+@keyframes movinrighth {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
