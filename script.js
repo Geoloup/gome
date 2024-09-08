@@ -1,12 +1,8 @@
 function focusTab(uuid) {
     tab = document.getElementById(uuid)
     console.log('ok')
-    try {
-        document.getElementById("searchbar").value = ""
-        document.getElementById("searchbar").value = document.getElementById(`tabtop${window.lastuuid}`).dataset.src
-    } catch {
-        
-    }
+    document.getElementById("searchbar").value = ""
+    document.getElementById("searchbar").value = document.getElementById(`tabtop${window.lastuuid}`).dataset.src
     window.lastuuid = uuid
     // remove the hidden class to all the other elements with the protrety before
     try {
