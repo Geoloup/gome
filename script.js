@@ -23,7 +23,7 @@ function newt() {
     window.lastuuid = uuid
     const tabtop = document.createElement('button')
     tabtop.innerHTML = `<span id='tabtopt${uuid}'>New Tab</span><i class='bx bx-x tabclose' id='uuid${uuid}'></i>`
-    tabtop.addEventListener('click',(event)=>{focusTab(tabtop.dataset.uuid,event);window.it = event})
+    tabtop.addEventListener('click',(event)=>{focusTab(tabtop.dataset.uuid,event);focusTab(tabtop.dataset.uuid,event);window.it = event})
     tabtop.dataset.uuid = uuid
     tabtop.dataset.src = 'Gome Laucher'
     tabtop.id = `tabtop${uuid}`
