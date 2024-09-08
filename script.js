@@ -25,7 +25,7 @@ function newt() {
     tabtop.innerHTML = `<span id='tabtopt${uuid}'>New Tab</span><i class='bx bx-x tabclose' id='uuid${uuid}'></i>`
     tabtop.addEventListener('click',(event)=>{focusTab(tabtop.dataset.uuid,event);focusTab(tabtop.dataset.uuid,event);window.it = event})
     tabtop.dataset.uuid = uuid
-    tabtop.dataset.src = 'https://geoloupgome.netlify.app/app.html?uuid='
+    tabtop.dataset.src = 'https://geoloupgome.netlify.app/app.html?uuid=' + uuid
     tabtop.id = `tabtop${uuid}`
     document.getElementById('tabtop').appendChild(tabtop)
     // create iframe of the tab
