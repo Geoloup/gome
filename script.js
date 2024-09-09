@@ -30,7 +30,7 @@ function newt() {
     document.getElementById('tabtop').appendChild(tabtop)
     // create iframe of the tab
     iframe = document.createElement('iframe');
-    iframe.is = "x-frame-bypass"
+    iframe.setAttribute('is','x-frame-bypass')
     iframe.id = uuid;
     iframe.src = 'https://geoloupgome.netlify.app/app.html?uuid=' + uuid
     document.getElementById("tabs").appendChild(iframe)
