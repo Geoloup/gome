@@ -41,7 +41,7 @@
         }
         // full proxy in a vanilla js
         function request(rurl) {
-            const url = "https://cors-proxy.fringe.zone/https://" + rurl;
+            const url = "https://cors-proxy.fringe.zone/https://" + rurl.replace('https://');
             const xhr = new XMLHttpRequest();
             xhr.open("GET", url, false); // Set the third parameter to false for synchronous request
             xhr.setRequestHeader('x-requested-with', 'geoloup')
@@ -97,9 +97,9 @@
             var scripts = doc.querySelectorAll("iframe");
             for (const script of scripts) {
                 if (script.src) {
-                    script.src = 'https://geoloupgome.netlify.app/iframe?url=' + script.src
+                    script.src = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/','')
                 } else {
-                    script.src = 'https://geoloupgome.netlify.app/iframe?url=' + script.src
+                    script.src = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/','')
                 }
             }
         }
@@ -108,9 +108,9 @@
             var scripts = doc.querySelectorAll("a");
             for (const script of scripts) {
                 if (script.src) {
-                    script.href = 'https://geoloupgome.netlify.app/iframe?url=' + script.src
+                    script.href = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/','')
                 } else {
-                    script.href = 'https://geoloupgome.netlify.app/iframe?url=' + script.src
+                    script.href = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/','')
                 }
             }
         }
