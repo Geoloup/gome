@@ -22,6 +22,7 @@
     </iframe>
 
     <script>// request with good url
+        // request with good url
         function pfix(url) {
             console.log(url)
             const xhr = new XMLHttpRequest();
@@ -41,7 +42,7 @@
         }
         // full proxy in a vanilla js
         function request(rurl) {
-            const url = "https://cors-proxy.fringe.zone/https://" + rurl.replace('https://','');
+            const url = "https://cors-proxy.fringe.zone/https://" + rurl;
             const xhr = new XMLHttpRequest();
             xhr.open("GET", url, false); // Set the third parameter to false for synchronous request
             xhr.setRequestHeader('x-requested-with', 'geoloup')
@@ -97,9 +98,9 @@
             var scripts = doc.querySelectorAll("iframe");
             for (const script of scripts) {
                 if (script.src) {
-                    script.src = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/','')
+                    script.src = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/https://', '')
                 } else {
-                    script.src = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/','')
+                    script.src = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/https://', '')
                 }
             }
         }
@@ -107,13 +108,15 @@
             var win = document.getElementById("iframe1").contentWindow
             var scripts = doc.querySelectorAll("a");
             for (const script of scripts) {
-                if (script.src) {
-                    script.href = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/','')
+                if (script.href) {
+                    script.href = 'https://geoloupgome.netlify.app/iframe?url=' + script.href.replace('https://cors-proxy.fringe.zone/https://', '')
                 } else {
-                    script.href = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/','')
+                    script.href = 'https://geoloupgome.netlify.app/iframe?url=' + script.href.replace('https://cors-proxy.fringe.zone/https://', '')
                 }
             }
         }
+
+
         function fixHTML(text) {
             const pattern = /https:\/\/([^\s"']+)/g;
             var text = text.replace(pattern, "https://cors-proxy.fringe.zone/https://$1");
@@ -125,12 +128,15 @@
             //text.replaceAll(url,'https://cors-proxy.fringe.zone/https://' + url)
             const pattern = /https:\/\/([^\s"']+)/g;
             const pattern1 = /https:\/\/cors-proxy.fringe.zone\/(?!https:\/\/)([^ \n]+)/g
-            var text = text.replace(pattern, "https://cors-proxy.fringe.zone/https://$1");
-            console.log(text);
-            var text = text.replaceAll('src="', 'src="https://cors-proxy.fringe.zone/')
-            var text = text.replaceAll('href="', 'href="https://cors-proxy.fringe.zone/')
-            var text = text.replaceAll('https://cors-proxy.fringe.zone/https://cors-proxy.fringe.zone/', 'https://cors-proxy.fringe.zone/')
-            var text = text.replace(pattern1, 'https://cors-proxy.fringe.zone/' + url + '/$1')
+            try {
+                var text = text.replace(pattern, "https://cors-proxy.fringe.zone/https://$1");
+                console.log(text);
+                var text = text.replaceAll('src="', 'src="https://cors-proxy.fringe.zone/')
+                var text = text.replaceAll('href="', 'href="https://cors-proxy.fringe.zone/')
+                var text = text.replaceAll('https://cors-proxy.fringe.zone/https://cors-proxy.fringe.zone/', 'https://cors-proxy.fringe.zone/')
+                var text = text.replace(pattern1, 'https://cors-proxy.fringe.zone/' + url + '/$1')
+
+            } catch { }
             console.log(text);
             return text;
         }
@@ -140,12 +146,13 @@
         function appendHTMLString(htmlString, doc) {
             doc.body.innerHTML = htmlString;
             // fetch elements pass in proxty request('url')
-            applyAllStyles(doc);
             setTimeout(() => {
                 runScript(doc);
+                applyAllStyles(doc);
+                IframeSRC(doc)
+                ALink(doc)
             }, 100)
         }
-
         var iframe = document.getElementById("iframe1");
         var iframesrc = new URLSearchParams(location.search).get('url')
         appendHTMLString(proxy(iframesrc), iframe.contentDocument);
