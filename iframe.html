@@ -41,7 +41,7 @@
         }
         // full proxy in a vanilla js
         function request(rurl) {
-            const url = "https://cors-proxy.fringe.zone/https://" + rurl.replace('https://');
+            const url = "https://cors-proxy.fringe.zone/https://" + rurl.replace('https://','');
             const xhr = new XMLHttpRequest();
             xhr.open("GET", url, false); // Set the third parameter to false for synchronous request
             xhr.setRequestHeader('x-requested-with', 'geoloup')
