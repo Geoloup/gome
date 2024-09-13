@@ -148,7 +148,7 @@
 
         var iframe = document.getElementById("iframe1");
         var iframesrc = new URLSearchParams(location.search).get('url')
-        appendHTMLString(proxy(""), iframe.contentDocument);
+        appendHTMLString(proxy(iframesrc), iframe.contentDocument);
         // www.madalin-cars-multiplayer.com/webgl/M/mcm-webgl/MCM-Pre-Game.html
 
         //# sourceURL=userscript.js
