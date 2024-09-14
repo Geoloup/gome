@@ -164,8 +164,8 @@
     }
     function proxy(url) {
       var text = request(url);
-      const pattern = /https:\/\/([^\s"']+)/g;
-      const pattern1 = /https:\/\/cors-proxy.fringe.zone\/(?!https:\/\/)([^ \n]+)/g;
+      const pattern = /https:\/\/([^\s"']+)/g;;
+      const pattern1 = new RegExp(Purl + '(?!https:\\/\\/)([^ \\n]+)', 'g');
       try {
         var text = text.replace(
           pattern,
