@@ -1,166 +1,211 @@
-<html>
-
-<head>
+<html><head>
     <meta charset="UTF-8">
-
+    
     <style id="webmakerstyle">
-        iframe {
-            height: 100vh;
-            width: 100vw;
-            border: none;
-        }
-
-        body {
-            overflow: hidden;
-            margin: 0;
-        }
+    iframe {
+      height:100vh;
+      width:100vw;
+      border:none;
+    }
+    body {
+      overflow:hidden;
+      margin:0;
+    }
     </style>
-</head>
-
-<body>
+    </head>
+    <body>
     <iframe id="iframe1">
     </iframe>
-
-    <script>// request with good url
-        // request with good url
-        function pfix(url) {
-            console.log(url)
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", url, false); // Set the third parameter to false for synchronous request
-
-            try {
-                xhr.send();
-                if (xhr.status === 200) {
-                    const text = xhr.responseText;
-                    return text;
-                } else {
-                    console.error("Error:", xhr.status, xhr.statusText);
-                }
-            } catch (error) {
-                console.error("Request failed 1:", error);
-            }
+    
+    <script>// setup proxyurl
+    const Purl = "https://api.codetabs.com/v1/proxy?quest=";
+    
+    // request with good url
+    function pfix(url) {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", url, false); // Set the third parameter to false for synchronous request
+    
+      try {
+        xhr.send();
+        if (xhr.status === 200) {
+          const text = xhr.responseText;
+          return text;
+        } else {
+          console.error("Error:", xhr.status, xhr.statusText);
         }
-        // full proxy in a vanilla js
-        function request(rurl) {
-            const url = "https://cors-proxy.fringe.zone/https://" + rurl;
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", url, false); // Set the third parameter to false for synchronous request
-            xhr.setRequestHeader('x-requested-with', 'geoloup')
-            try {
-                xhr.send();
-                if (xhr.status === 200) {
-                    const text = xhr.responseText;
-                    return text;
-                } else {
-                    console.error("Error:", xhr.status, xhr.statusText);
-                }
-            } catch (error) {
-                console.error("Request failed:", error);
-            }
+      } catch (error) {
+        console.error("Request failed 1:", error);
+      }
+    }
+    
+    // full proxy in a vanilla js
+    function request(rurl) {
+      const url = Purl + rurl;
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", url, false);
+      try {
+        xhr.send();
+        if (xhr.status === 200) {
+          const text = xhr.responseText;
+          return text;
+        } else {
+          console.error("Error:", xhr.status, xhr.statusText);
         }
-        async function applyAllStyles(doc) {
-            const styleTags = doc.querySelectorAll('style');
-            const linkTags = doc.querySelectorAll('link[rel="stylesheet"]');
-
-            // Apply inline styles
-            styleTags.forEach(styleTag => {
-                const styleContent = styleTag.innerHTML;
-                const styleElement = doc.createElement('style');
-                styleElement.textContent = styleContent;
-                doc.head.appendChild(styleElement);
-            });
-
-            // Fetch and apply external stylesheets
-            for (const linkTag of linkTags) {
-                if (linkTag.href) {
-                    console.log(linkTag.href)
-                    const styleContent = pfix(linkTag.href);
-                    const styleElement = doc.createElement('style');
-                    styleElement.textContent = styleContent;
-                    doc.head.appendChild(styleElement);
-                }
-            }
+      } catch (error) {
+        console.error("Request failed:", error);
+      }
+    }
+    async function applyAllStyles(doc) {
+      const styleTags = doc.querySelectorAll("style");
+      const linkTags = doc.querySelectorAll('link[rel="stylesheet"]');
+    
+      // Apply inline styles
+      styleTags.forEach(styleTag => {
+        const styleContent = styleTag.innerHTML;
+        const styleElement = doc.createElement("style");
+        styleElement.textContent = styleContent;
+        doc.head.appendChild(styleElement);
+      });
+    
+      // Fetch and apply external stylesheets
+      for (const linkTag of linkTags) {
+        if (linkTag.href) {
+          const styleContent = pfix(linkTag.href);
+          const styleElement = doc.createElement("style");
+          styleElement.textContent = styleContent;
+          doc.head.appendChild(styleElement);
         }
-        async function runScript(doc) {
-            var win = document.getElementById("iframe1").contentWindow
-            var scripts = doc.querySelectorAll("script");
-            for (const script of scripts) {
-                if (script.src) {
-                    console.log(script.src);
-                    win.eval(fixHTML(pfix(script.src)));
-                } else {
-                    win.eval(fixHTML(script.innerHTML));
-                }
-            }
+      }
+    }
+    async function runScript(doc) {
+      var win = document.getElementById("iframe1").contentWindow;
+      var scripts = doc.querySelectorAll("script");
+      for (const script of scripts) {
+        if (script.src) {
+          try {
+            win.eval(fixHTML(pfix(script.src)));
+          } catch {
+            win.eval(fixHTML(script.innerHTML));
+          }
+        } else {
+          win.eval(fixHTML(script.innerHTML));
         }
-        async function IframeSRC(doc) {
-            var win = document.getElementById("iframe1").contentWindow
-            var scripts = doc.querySelectorAll("iframe");
-            for (const script of scripts) {
-                if (script.src) {
-                    script.src = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/https://', '')
-                } else {
-                    script.src = 'https://geoloupgome.netlify.app/iframe?url=' + script.src.replace('https://cors-proxy.fringe.zone/https://', '')
-                }
-            }
+      }
+    }
+    async function IframeSRC(doc) {
+      var win = document.getElementById("iframe1").contentWindow;
+      var scripts = doc.querySelectorAll("iframe");
+      for (const script of scripts) {
+        if (script.src) {
+          script.src =
+            "https://geoloupgome.netlify.app/iframe?url=" +
+            script.src.replace(Purl, "");
+        } else {
+          script.src =
+            "https://geoloupgome.netlify.app/iframe?url=" +
+            script.src.replace(Purl, "");
         }
-        async function ALink(doc) {
-            var win = document.getElementById("iframe1").contentWindow
-            var scripts = doc.querySelectorAll("a");
-            for (const script of scripts) {
-                if (script.href) {
-                    script.href = 'https://geoloupgome.netlify.app/iframe?url=' + script.href.replace('https://cors-proxy.fringe.zone/https://', '')
-                } else {
-                    script.href = 'https://geoloupgome.netlify.app/iframe?url=' + script.href.replace('https://cors-proxy.fringe.zone/https://', '')
-                }
-            }
+      }
+    }
+    function SetupImg(doc) {
+      var win = document.getElementById("iframe1").contentWindow;
+      setInterval(() => {
+        Img(doc);
+      }, 1000);
+    }
+    
+    // https://api.codetabs.com/v1/proxy?quest=
+    async function Img(doc) {
+      var win = document.getElementById("iframe1").contentWindow;
+      var images = doc.querySelectorAll("img");
+      for (const image of images) {
+        if (image.dataset.done == "1") {
+        } else {
+          var imgElement = document.createElement("img");
+    
+          // Set the src attribute to the URL of the image
+          imgElement.src = image.src.replace(
+            "https://cors-proxy.fringe.zone/https://",
+            "https://api.codetabs.com/v1/proxy?quest="
+          );
+    
+          // Optionally, set other attributes like alt, width, height, etc.
+          imgElement.alt = image.alt;
+          imgElement.width = image.width; // Set the width
+          imgElement.height = image.height; // Set the height
+          imgElement.dataset.done = "1";
+          imgElement.id = image.id;
+          imgElement.classList = image.classList;
+          image.replaceWith(imgElement);
         }
-
-
-        function fixHTML(text) {
-            const pattern = /https:\/\/([^\s"']+)/g;
-            var text = text.replace(pattern, "https://cors-proxy.fringe.zone/https://$1");
-            return text;
-
+      }
+    }
+    
+    async function ALink(doc) {
+      var win = document.getElementById("iframe1").contentWindow;
+      var scripts = doc.querySelectorAll("a");
+      for (const script of scripts) {
+        if (script.href) {
+          script.href =
+            "https://geoloupgome.netlify.app/iframe?url=" +
+            script.href.replace(Purl, "");
+        } else {
+          script.href =
+            "https://geoloupgome.netlify.app/iframe?url=" +
+            script.href.replace(Purl, "");
         }
-        function proxy(url) {
-            var text = request(url);
-            //text.replaceAll(url,'https://cors-proxy.fringe.zone/https://' + url)
-            const pattern = /https:\/\/([^\s"']+)/g;
-            const pattern1 = /https:\/\/cors-proxy.fringe.zone\/(?!https:\/\/)([^ \n]+)/g
-            try {
-                var text = text.replace(pattern, "https://cors-proxy.fringe.zone/https://$1");
-                console.log(text);
-                var text = text.replaceAll('src="', 'src="https://cors-proxy.fringe.zone/')
-                var text = text.replaceAll('href="', 'href="https://cors-proxy.fringe.zone/')
-                var text = text.replaceAll('https://cors-proxy.fringe.zone/https://cors-proxy.fringe.zone/', 'https://cors-proxy.fringe.zone/')
-                var text = text.replace(pattern1, 'https://cors-proxy.fringe.zone/' + url + '/$1')
-
-            } catch { }
-            console.log(text);
-            return text;
-        }
-
-
-        // Function to parse and append HTML string
-        function appendHTMLString(htmlString, doc) {
-            doc.body.innerHTML = htmlString;
-            // fetch elements pass in proxty request('url')
-            setTimeout(() => {
-                runScript(doc);
-                applyAllStyles(doc);
-                IframeSRC(doc)
-                ALink(doc)
-            }, 100)
-        }
-        var iframe = document.getElementById("iframe1");
-        var iframesrc = new URLSearchParams(location.search).get('url')
-        appendHTMLString(proxy(iframesrc), iframe.contentDocument);
-        // www.madalin-cars-multiplayer.com/webgl/M/mcm-webgl/MCM-Pre-Game.html
-
-        //# sourceURL=userscript.js
+      }
+    }
+    
+    function fixHTML(text) {
+      const pattern = /https:\/\/([^\s"']+)/g;
+      var text = text.replace(pattern, Purl + "$1");
+      return text;
+    }
+    function proxy(url) {
+      var text = request(url);
+      const pattern = /https:\/\/([^\s"']+)/g;
+      const pattern1 = /https:\/\/cors-proxy.fringe.zone\/(?!https:\/\/)([^ \n]+)/g;
+      try {
+        var text = text.replace(
+          pattern,
+          Purl + "$1"
+        );
+        var text = text.replaceAll('src="', 'src="' + Purl);
+        var text = text.replaceAll(
+          'href="',
+          'href="' + Purl
+        );
+        var text = text.replaceAll(Purl + Purl, Purl);
+        var text = text.replace(
+          pattern1,
+          Purl + url + "/$1"
+        );
+      } catch {}
+      return text;
+    }
+    
+    // Function to parse and append HTML string
+    function appendHTMLString(htmlString, doc) {
+      doc.body.innerHTML = htmlString;
+      // fetch elements pass in proxty request('url')
+      setTimeout(() => {
+        runScript(doc);
+        applyAllStyles(doc);
+        IframeSRC(doc);
+        ALink(doc);
+        Img(doc);
+        SetupImg(doc);
+      }, 100);
+    }
+    
+    var iframe = document.getElementById("iframe1");
+    appendHTMLString(
+      proxy("www.madalin-cars-multiplayer.com/"),
+      iframe.contentDocument
+    );
+    
+    //# sourceURL=userscript.js
     </script>
-
-</body>
-
-</html>
+    
+    </body></html>
