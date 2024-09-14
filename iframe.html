@@ -201,7 +201,7 @@
     
     var iframe = document.getElementById("iframe1");
     appendHTMLString(
-      proxy("www.madalin-cars-multiplayer.com/"),
+      proxy(new URLSearchParams(window.location.search).get('url')),
       iframe.contentDocument
     );
     
