@@ -18,193 +18,218 @@
     </iframe>
     
     <script>// setup proxyurl
-    const Purl = "https://api.codetabs.com/v1/proxy?quest=";
-    
-    // request with good url
-    function pfix(url) {
-      const xhr = new XMLHttpRequest();
-      xhr.open("GET", url, false); // Set the third parameter to false for synchronous request
-    
+const Purl = "https://api.codetabs.com/v1/proxy?quest=";
+
+// request with good url
+function pfix(url) {
+  var Purl = "https://api.codetabs.com/v1/proxy?quest=";
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", url.replace(Purl + Purl, Purl), false); // Set the third parameter to false for synchronous request
+
+  try {
+    xhr.send();
+    if (xhr.status === 200) {
+      const text = xhr.responseText;
+      return text;
+    } else {
+      console.error("Error:", xhr.status, xhr.statusText);
+    }
+  } catch (error) {}
+}
+
+function request(rurl) {
+  const url = Purl + rurl;
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", url, false);
+  try {
+    xhr.send();
+    if (xhr.status === 200) {
+      const text = xhr.responseText;
+      return text;
+    } else {
+      console.error("Error:", xhr.status, xhr.statusText);
+    }
+  } catch (error) {}
+}
+async function applyAllStyles(doc, url) {
+  const styleTags = doc.querySelectorAll("style");
+  const linkTags = doc.querySelectorAll('link[rel="stylesheet"]');
+ styleTags.forEach(styleTag => {
+    const styleContent = styleTag.innerHTML;
+    const styleElement = doc.createElement("style");
+    styleElement.textContent = styleContent;
+    doc.head.appendChild(styleElement);
+  });
+
+  linkTags.forEach(linkTag => {
+    if (linkTag.href) {
+      var src = linkTag.href;
+      if (
+        src
+          .replace("https://api.codetabs.com/v1/proxy?quest=", "")
+          .startsWith("/")
+      ) {
+        var src =
+          "https://api.codetabs.com/v1/proxy?quest=" +
+          new URL(url).origin +
+          src.replace("https://api.codetabs.com/v1/proxy?quest=", "");
+      } else {
+        var src = src;
+      }
+      const styleContent = pfix(src);
+      const styleElement = doc.createElement("style");
+      styleElement.textContent = styleContent;
+      doc.head.appendChild(styleElement);
+    }
+  });
+}
+async function runScript(doc, url) {
+  var win = document.getElementById("iframe1").contentWindow;
+  var scripts = doc.querySelectorAll("script");
+  scripts.forEach(script => {
+    if (script.src) {
+      var src = script.src;
+      if (
+        src
+          .replace("https://api.codetabs.com/v1/proxy?quest=", "")
+          .startsWith("/")
+      ) {
+        var src =
+          "https://api.codetabs.com/v1/proxy?quest=" +
+          new URL(url).origin +
+          src.replace("https://api.codetabs.com/v1/proxy?quest=", "");
+      } else {
+        var src = src;
+      }
+
       try {
-        xhr.send();
-        if (xhr.status === 200) {
-          const text = xhr.responseText;
-          return text;
-        } else {
-          console.error("Error:", xhr.status, xhr.statusText);
-        }
-      } catch (error) {
-        console.error("Request failed 1:", error);
-      }
-    }
-    
-    // full proxy in a vanilla js
-    function request(rurl) {
-      const url = Purl + rurl;
-      const xhr = new XMLHttpRequest();
-      xhr.open("GET", url, false);
-      try {
-        xhr.send();
-        if (xhr.status === 200) {
-          const text = xhr.responseText;
-          return text;
-        } else {
-          console.error("Error:", xhr.status, xhr.statusText);
-        }
-      } catch (error) {
-        console.error("Request failed:", error);
-      }
-    }
-    async function applyAllStyles(doc) {
-      const styleTags = doc.querySelectorAll("style");
-      const linkTags = doc.querySelectorAll('link[rel="stylesheet"]');
-    
-      // Apply inline styles
-      styleTags.forEach(styleTag => {
-        const styleContent = styleTag.innerHTML;
-        const styleElement = doc.createElement("style");
-        styleElement.textContent = styleContent;
-        doc.head.appendChild(styleElement);
-      });
-    
-      // Fetch and apply external stylesheets
-      for (const linkTag of linkTags) {
-        if (linkTag.href) {
-          const styleContent = pfix(linkTag.href);
-          const styleElement = doc.createElement("style");
-          styleElement.textContent = styleContent;
-          doc.head.appendChild(styleElement);
-        }
-      }
-    }
-    async function runScript(doc) {
-      var win = document.getElementById("iframe1").contentWindow;
-      var scripts = doc.querySelectorAll("script");
-      for (const script of scripts) {
-        if (script.src) {
-          try {
-            win.eval(fixHTML(pfix(script.src)));
-          } catch {
-            win.eval(fixHTML(script.innerHTML));
-          }
-        } else {
+        setTimeout(() => {
+        try {
+           win.eval(fixHTML(pfix(src)))
+         } catch {
+          };
+        }, 100);
+      } catch {
+        setTimeout(() => {
           win.eval(fixHTML(script.innerHTML));
-        }
+        }, 100);
       }
-    }
-    async function IframeSRC(doc) {
-      var win = document.getElementById("iframe1").contentWindow;
-      var scripts = doc.querySelectorAll("iframe");
-      for (const script of scripts) {
-        if (script.src) {
-          script.src =
-            "https://geoloupgome.netlify.app/iframe?url=" +
-            script.src.replace(Purl, "");
-        } else {
-          script.src =
-            "https://geoloupgome.netlify.app/iframe?url=" +
-            script.src.replace(Purl, "");
-        }
-      }
-    }
-    function SetupImg(doc) {
-      var win = document.getElementById("iframe1").contentWindow;
-      setInterval(() => {
-        Img(doc);
-      }, 1000);
-    }
-    
-    // https://api.codetabs.com/v1/proxy?quest=
-    async function Img(doc) {
-      var win = document.getElementById("iframe1").contentWindow;
-      var images = doc.querySelectorAll("img");
-      for (const image of images) {
-        if (image.dataset.done == "1") {
-        } else {
-          var imgElement = document.createElement("img");
-    
-          // Set the src attribute to the URL of the image
-          imgElement.src = image.src.replace(
-            "https://cors-proxy.fringe.zone/https://",
-            "https://api.codetabs.com/v1/proxy?quest="
-          );
-    
-          // Optionally, set other attributes like alt, width, height, etc.
-          imgElement.alt = image.alt;
-          imgElement.width = image.width; // Set the width
-          imgElement.height = image.height; // Set the height
-          imgElement.dataset.done = "1";
-          imgElement.id = image.id;
-          imgElement.classList = image.classList;
-          image.replaceWith(imgElement);
-        }
-      }
-    }
-    
-    async function ALink(doc) {
-      var win = document.getElementById("iframe1").contentWindow;
-      var scripts = doc.querySelectorAll("a");
-      for (const script of scripts) {
-        if (script.href) {
-          script.href =
-            "https://geoloupgome.netlify.app/iframe?url=" +
-            script.href.replace(Purl, "");
-        } else {
-          script.href =
-            "https://geoloupgome.netlify.app/iframe?url=" +
-            script.href.replace(Purl, "");
-        }
-      }
-    }
-    
-    function fixHTML(text) {
-      const pattern = /https:\/\/([^\s"']+)/g;
-      var text = text.replace(pattern, Purl + "$1");
-      return text;
-    }
-    function proxy(url) {
-      var text = request(url);
-      const pattern = /https:\/\/([^\s"']+)/g;;
-      const pattern1 = new RegExp(Purl + '(?!https:\\/\\/)([^ \\n]+)', 'g');
-      try {
-        var text = text.replace(
-          pattern,
-          Purl + "$1"
-        );
-        var text = text.replaceAll('src="', 'src="' + Purl);
-        var text = text.replaceAll(
-          'href="',
-          'href="' + Purl
-        );
-        var text = text.replaceAll(Purl + Purl, Purl);
-        var text = text.replace(
-          pattern1,
-          Purl + url + "/$1"
-        );
-      } catch {}
-      return text;
-    }
-    
-    // Function to parse and append HTML string
-    function appendHTMLString(htmlString, doc) {
-      doc.body.innerHTML = htmlString;
-      // fetch elements pass in proxty request('url')
+    } else {
       setTimeout(() => {
-        runScript(doc);
-        applyAllStyles(doc);
-        IframeSRC(doc);
-        ALink(doc);
-        Img(doc);
-        SetupImg(doc);
+        win.eval(fixHTML(script.innerHTML));
       }, 100);
     }
-    
-    var iframe = document.getElementById("iframe1");
-    appendHTMLString(
-      proxy(new URLSearchParams(window.location.search).get('url')),
-      iframe.contentDocument
-    );
-    
+  });
+}
+async function IframeSRC(doc) {
+  var win = document.getElementById("iframe1").contentWindow;
+  var scripts = doc.querySelectorAll("iframe");
+  for (const script of scripts) {
+    if (script.src) {
+      script.src =
+        "https://geoloupgome.netlify.app/iframe?url=" +
+        script.src.replace(Purl, "");
+    } else {
+      script.src =
+        "https://geoloupgome.netlify.app/iframe?url=" +
+        script.src.replace(Purl, "");
+    }
+  }
+}
+function SetupImg(doc) {
+  var win = document.getElementById("iframe1").contentWindow;
+  setInterval(() => {
+    Img(doc);
+  }, 1000);
+}
+
+async function Img(doc, url) {
+  var win = document.getElementById("iframe1").contentWindow;
+  var images = doc.querySelectorAll("img");
+  for (const image of images) {
+    if (image.dataset.done == "1") {
+    } else {
+      var imgElement = document.createElement("img");
+      var src = image.src.replace(
+        "https://cors-proxy.fringe.zone/https://",
+        "https://api.codetabs.com/v1/proxy?quest="
+      );
+      if (
+        src
+          .replace("https://api.codetabs.com/v1/proxy?quest=", "")
+          .startsWith("/")
+      ) {
+        var url = new URL(url).origin;
+        imgElement.src =
+          "https://api.codetabs.com/v1/proxy?quest=" +
+          url +
+          src.replace("https://api.codetabs.com/v1/proxy?quest=", "");
+      } else {
+        imgElement.src = src;
+      }
+      imgElement.alt = image.alt;
+      imgElement.width = image.width;
+      imgElement.height = image.height;
+      imgElement.dataset.done = "1";
+      imgElement.id = image.id;
+      imgElement.classList = image.classList;
+      image.replaceWith(imgElement);
+    }
+  }
+}
+
+async function ALink(doc) {
+  var win = document.getElementById("iframe1").contentWindow;
+  var scripts = doc.querySelectorAll("a");
+  for (const script of scripts) {
+    if (script.href) {
+      script.href =
+        "https://geoloupgome.netlify.app/iframe?url=" +
+        script.href.replace(Purl, "");
+    } else {
+      script.href =
+        "https://geoloupgome.netlify.app/iframe?url=" +
+        script.href.replace(Purl, "");
+    }
+  }
+}
+
+function fixHTML(text) {
+  const pattern = /https:\/\/([^\s"']+)/g;
+  var text = text.replace(pattern, Purl + "$1");
+  return text;
+}
+function proxy(url) {
+  var text = request(url);
+  const pattern = /https:\/\/([^\s"']+)/g;
+  try {
+    var text = text.replace(pattern, Purl + "$1");
+    var text = text.replaceAll('src="', 'src="' + Purl);
+    var text = text.replaceAll('href="', 'href="' + Purl);
+    var text = text.replaceAll(Purl + Purl, Purl);
+  } catch {}
+  return text;
+}
+
+function appendHTMLString(url, doc) {
+  var htmlString = proxy(url);
+  doc.body.innerHTML = htmlString;
+  setTimeout(() => {
+    runScript(doc, url);
+    applyAllStyles(doc, url);
+    IframeSRC(doc, url);
+    ALink(doc, url);
+    Img(doc, url);
+    SetupImg(doc, url);
+  }, 100);
+}
+
+var iframe = document.getElementById("iframe1");
+appendHTMLString(
+  "https://www.dandwiki.com/wiki/Axolotl_(5e_Race)",
+  iframe.contentDocument
+);
+
     //# sourceURL=userscript.js
     </script>
     
