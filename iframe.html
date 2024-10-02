@@ -226,7 +226,7 @@ function appendHTMLString(url, doc) {
 
 var iframe = document.getElementById("iframe1");
 appendHTMLString(
-  "https://www.dandwiki.com/wiki/Axolotl_(5e_Race)",
+  new URLSearchParams(window.location.search).get('url'),
   iframe.contentDocument
 );
 
