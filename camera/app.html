@@ -172,20 +172,26 @@ let currentDeviceId = null;
 
 // List the available video devices
 async function getCameras() {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const videoDevices = devices.filter(device => device.kind === 'videoinput');
-    
-    cameraSelect.innerHTML = ''; // Clear the select options
-    videoDevices.forEach((device, index) => {
-        const option = document.createElement('option');
-        option.value = device.deviceId;
-        option.text = device.label || `Camera ${index + 1}`;
-        cameraSelect.appendChild(option);
-    });
-    
-    if (videoDevices.length > 0) {
-        currentDeviceId = videoDevices[0].deviceId; // Default to the first camera
-        cameraSelect.disabled = false;
+    try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        
+        cameraSelect.innerHTML = ''; // Clear the select options
+        videoDevices.forEach((device, index) => {
+            const option = document.createElement('option');
+            option.value = device.deviceId;
+            option.text = device.label || `Camera ${index + 1}`;
+            cameraSelect.appendChild(option);
+        });
+
+        if (videoDevices.length > 0) {
+            currentDeviceId = videoDevices[0].deviceId; // Default to the first camera
+            cameraSelect.disabled = false;
+        } else {
+            cameraSelect.disabled = true;
+        }
+    } catch (error) {
+        console.error("Error getting camera devices: ", error);
     }
 }
 
@@ -194,7 +200,7 @@ async function startCamera(deviceId) {
     if (cameraStream) {
         stopCamera(); // Stop previous stream if already running
     }
-    
+
     try {
         cameraStream = await navigator.mediaDevices.getUserMedia({
             video: { deviceId: { exact: deviceId } }
@@ -225,9 +231,14 @@ requestPermissionButton.addEventListener('click', async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         stream.getTracks().forEach(track => track.stop()); // Stop the stream after permissions are granted
         
-        // Once permission is granted, load the available cameras and enable the camera selection
-        await getCameras();
+        // Once permission is granted, reload the list of cameras
+        await getCameras();  // Refresh the camera list after permission is granted
         permissionOverlay.style.display = 'none'; // Hide overlay after permission granted
+
+        if (currentDeviceId) {
+            // Auto-start the camera stream for the first available camera
+            startCamera(currentDeviceId);
+        }
     } catch (err) {
         console.error('Camera permission denied:', err);
     }
