@@ -143,7 +143,7 @@ button:disabled {
     <title>Camera Stream</title>
     <link rel="stylesheet" href="app.css">
     <!-- Overlay modal asking for camera access -->
-    <div id="permissionOverlay" class="overlay">
+    <div id="permissionOverlay" class="overlay" style="display: none;">
         <div class="overlay-content">
             <h2>We Need Access to Your Camera</h2>
             <p>This application requires access to your camera for streaming. Please click the button below to allow access.</p>
@@ -153,7 +153,7 @@ button:disabled {
 
     <h1>Choose Camera Stream</h1>
     
-    <select id="cameraSelect" disabled=""></select>
+    <select id="cameraSelect"><option value="">Camera 1</option></select>
     <br>
     <video id="cameraView" autoplay="" playsinline=""></video>
     <br>
@@ -231,14 +231,16 @@ requestPermissionButton.addEventListener('click', async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         stream.getTracks().forEach(track => track.stop()); // Stop the stream after permissions are granted
         
-        // Once permission is granted, reload the list of cameras
-        await getCameras();  // Refresh the camera list after permission is granted
-        permissionOverlay.style.display = 'none'; // Hide overlay after permission granted
+        // Add a delay before fetching the list of cameras
+        setTimeout(async () => {
+            await getCameras();  // Refresh the camera list after permission is granted
+            permissionOverlay.style.display = 'none'; // Hide overlay after permission granted
 
-        if (currentDeviceId) {
-            // Auto-start the camera stream for the first available camera
-            startCamera(currentDeviceId);
-        }
+            if (currentDeviceId) {
+                // Auto-start the camera stream for the first available camera
+                startCamera(currentDeviceId);
+            }
+        }, 500); // 500ms delay
     } catch (err) {
         console.error('Camera permission denied:', err);
     }
