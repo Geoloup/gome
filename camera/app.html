@@ -22,7 +22,58 @@ h1 {
     color: #333;
 }
 
-/* Container for the video and controls */
+/* Modal overlay styles */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.overlay-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.overlay-content h2 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.overlay-content p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #555;
+}
+
+.overlay-content button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.overlay-content button:hover {
+    background-color: #0056b3;
+}
+
+/* Main page content styling */
 #cameraView {
     width: 100%;
     max-width: 640px;
@@ -32,12 +83,10 @@ h1 {
     background-color: #000;
 }
 
-/* Centering the content and adding space between elements */
 select, button {
     margin: 10px 0;
 }
 
-/* Style the camera dropdown */
 #cameraSelect {
     padding: 10px;
     width: 100%;
@@ -50,7 +99,6 @@ select, button {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Styling the buttons */
 button {
     padding: 10px 20px;
     font-size: 1rem;
@@ -63,18 +111,15 @@ button {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover effects for buttons */
 button:hover {
     background-color: #0056b3;
 }
 
-/* Disabled button style */
 button:disabled {
     background-color: #c0c0c0;
     cursor: not-allowed;
 }
 
-/* Small screens responsive layout */
 @media (max-width: 768px) {
     #cameraView {
         max-width: 90%;
@@ -93,24 +138,34 @@ button:disabled {
 </style>
 </head>
 <body>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Camera Stream</title>
+    <link rel="stylesheet" href="app.css">
+    <!-- Overlay modal asking for camera access -->
+    <div id="permissionOverlay" class="overlay">
+        <div class="overlay-content">
+            <h2>We Need Access to Your Camera</h2>
+            <p>This application requires access to your camera for streaming. Please click the button below to allow access.</p>
+            <button id="requestPermission">Allow Camera Access</button>
+        </div>
+    </div>
+
     <h1>Choose Camera Stream</h1>
     
-    <select id="cameraSelect"><option value="">Camera 1</option></select>
+    <select id="cameraSelect" disabled=""></select>
     <br>
     <video id="cameraView" autoplay="" playsinline=""></video>
     <br>
     <button id="toggleCamera">Start Camera</button>
     <button id="pipButton" hidden="">Enter Picture-in-Picture</button>
 
-
-
 <script>const cameraView = document.getElementById('cameraView');
+const requestPermissionButton = document.getElementById('requestPermission');
 const toggleCameraButton = document.getElementById('toggleCamera');
 const pipButton = document.getElementById('pipButton');
 const cameraSelect = document.getElementById('cameraSelect');
+const permissionOverlay = document.getElementById('permissionOverlay');
 
 let cameraStream = null;
 let currentDeviceId = null;
@@ -130,6 +185,7 @@ async function getCameras() {
     
     if (videoDevices.length > 0) {
         currentDeviceId = videoDevices[0].deviceId; // Default to the first camera
+        cameraSelect.disabled = false;
     }
 }
 
@@ -146,6 +202,7 @@ async function startCamera(deviceId) {
         cameraView.srcObject = cameraStream;
         pipButton.hidden = false; // Show PiP button when the stream starts
         toggleCameraButton.textContent = "Stop Camera";
+        toggleCameraButton.hidden = false;
     } catch (err) {
         console.error("Error accessing camera: ", err);
     }
@@ -160,6 +217,21 @@ function stopCamera() {
         toggleCameraButton.textContent = "Start Camera";
     }
 }
+
+// Request camera permission on button click
+requestPermissionButton.addEventListener('click', async () => {
+    try {
+        // Prompt user to allow access to camera
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream.getTracks().forEach(track => track.stop()); // Stop the stream after permissions are granted
+        
+        // Once permission is granted, load the available cameras and enable the camera selection
+        await getCameras();
+        permissionOverlay.style.display = 'none'; // Hide overlay after permission granted
+    } catch (err) {
+        console.error('Camera permission denied:', err);
+    }
+});
 
 // Toggle camera stream on button click
 toggleCameraButton.addEventListener('click', () => {
@@ -190,9 +262,6 @@ pipButton.addEventListener('click', async () => {
         }
     }
 });
-
-// Load available cameras on page load
-getCameras();
 
 //# sourceURL=userscript.js
 </script>
