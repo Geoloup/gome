@@ -1,0 +1,200 @@
+<html><head>
+<meta charset="UTF-8">
+
+<style id="webmakerstyle">
+/* General body styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Container for the video and controls */
+#cameraView {
+    width: 100%;
+    max-width: 640px;
+    border-radius: 10px;
+    border: 2px solid #333;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #000;
+}
+
+/* Centering the content and adding space between elements */
+select, button {
+    margin: 10px 0;
+}
+
+/* Style the camera dropdown */
+#cameraSelect {
+    padding: 10px;
+    width: 100%;
+    max-width: 200px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 2px solid #333;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling the buttons */
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effects for buttons */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Disabled button style */
+button:disabled {
+    background-color: #c0c0c0;
+    cursor: not-allowed;
+}
+
+/* Small screens responsive layout */
+@media (max-width: 768px) {
+    #cameraView {
+        max-width: 90%;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    button, #cameraSelect {
+        width: 90%;
+        max-width: none;
+    }
+}
+
+</style>
+</head>
+<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Stream</title>
+    <h1>Choose Camera Stream</h1>
+    
+    <select id="cameraSelect"><option value="">Camera 1</option></select>
+    <br>
+    <video id="cameraView" autoplay="" playsinline=""></video>
+    <br>
+    <button id="toggleCamera">Start Camera</button>
+    <button id="pipButton" hidden="">Enter Picture-in-Picture</button>
+
+
+
+<script>const cameraView = document.getElementById('cameraView');
+const toggleCameraButton = document.getElementById('toggleCamera');
+const pipButton = document.getElementById('pipButton');
+const cameraSelect = document.getElementById('cameraSelect');
+
+let cameraStream = null;
+let currentDeviceId = null;
+
+// List the available video devices
+async function getCameras() {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter(device => device.kind === 'videoinput');
+    
+    cameraSelect.innerHTML = ''; // Clear the select options
+    videoDevices.forEach((device, index) => {
+        const option = document.createElement('option');
+        option.value = device.deviceId;
+        option.text = device.label || `Camera ${index + 1}`;
+        cameraSelect.appendChild(option);
+    });
+    
+    if (videoDevices.length > 0) {
+        currentDeviceId = videoDevices[0].deviceId; // Default to the first camera
+    }
+}
+
+// Start the camera stream using the selected device
+async function startCamera(deviceId) {
+    if (cameraStream) {
+        stopCamera(); // Stop previous stream if already running
+    }
+    
+    try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+            video: { deviceId: { exact: deviceId } }
+        });
+        cameraView.srcObject = cameraStream;
+        pipButton.hidden = false; // Show PiP button when the stream starts
+        toggleCameraButton.textContent = "Stop Camera";
+    } catch (err) {
+        console.error("Error accessing camera: ", err);
+    }
+}
+
+// Stop the camera stream
+function stopCamera() {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraView.srcObject = null;
+        pipButton.hidden = true; // Hide PiP button when the stream stops
+        toggleCameraButton.textContent = "Start Camera";
+    }
+}
+
+// Toggle camera stream on button click
+toggleCameraButton.addEventListener('click', () => {
+    if (!cameraStream) {
+        startCamera(currentDeviceId);
+    } else {
+        stopCamera();
+    }
+});
+
+// Handle camera selection change
+cameraSelect.addEventListener('change', (event) => {
+    currentDeviceId = event.target.value;
+    if (cameraStream) {
+        startCamera(currentDeviceId); // Switch to the newly selected camera
+    }
+});
+
+// Picture-in-Picture feature
+pipButton.addEventListener('click', async () => {
+    if (document.pictureInPictureElement) {
+        document.exitPictureInPicture();
+    } else {
+        try {
+            await cameraView.requestPictureInPicture();
+        } catch (err) {
+            console.error("Error entering Picture-in-Picture: ", err);
+        }
+    }
+});
+
+// Load available cameras on page load
+getCameras();
+
+//# sourceURL=userscript.js
+</script>
+
+</body></html>
