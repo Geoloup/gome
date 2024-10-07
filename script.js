@@ -75,6 +75,7 @@ function search() {
     if (search.includes("https://") || search.includes("http://")) {
         // change the iframe src
         document.getElementById(`tabtop${window.lastuuid}`).src = search
+        document.getElementById(`tabtop${window.lastuuid}`).dataset.src = search
         document.getElementById(window.lastuuid).src = search
     } else {
         console.log('was not url so not supported')
